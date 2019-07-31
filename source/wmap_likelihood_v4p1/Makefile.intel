@@ -1,0 +1,66 @@
+#Makefile --- WMAP-7 Likelihood code...
+
+CFITSIO=/usr/local
+
+#
+#			Non-test object files.
+#
+WMAPLIB = libwmap7.a
+OBJS = read_archive_map.o \
+	read_fits.o \
+	healpix_types.o \
+	br_mod_dist.o \
+	WMAP_7yr_options.o \
+	WMAP_7yr_util.o \
+	WMAP_7yr_gibbs.o \
+	WMAP_7yr_tt_pixlike.o \
+	WMAP_7yr_tt_beam_ptsrc_chisq.o \
+	WMAP_7yr_teeebb_pixlike.o \
+	WMAP_7yr_tetbeebbeb_pixlike.o \
+	WMAP_7yr_likelihood.o
+#
+#			General Commands.
+#
+DIFF = diff -w
+RM = rm -f
+
+# See the CHANGES files for a description of these options
+WMAPFLAGS  = -DOPTIMIZE
+#WMAPFLAGS += -DUSE_LOWELL_TBEB    # turns on low-l maxlike TB/EB
+#WMAPFLAGS += -DUSE_HIGHELL_TB     # turns on high-l master TB
+#WMAPFLAGS += -DFASTERTT           # speed up matrix low-l TT
+#WMAPFLAGS += -DTIMING             # print out timing stats for profiling
+
+
+F90    = ifort
+FFLAGS = -O $(WMAPFLAGS)
+INCS   = -I. -I$(CFITSIO)/include
+#LIBS   = -L. -L$(CFITSIO)/lib -lcfitsio -lscs_mp -lpthread
+
+INTEL_LIB=/export/apps/intel/composer_xe_2013_sp1.2.144/mkl/lib/intel64/
+LIBS = -L. -L$(INTEL_LIB) -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -liomp5 -lmkl_mc3 -lmkl_def -lmkl_lapack95_lp64 -L$(CFITSIO) -lcfitsio
+
+
+all: $(WMAPLIB) test
+
+check: test
+	./test
+
+$(WMAPLIB): $(OBJS)
+	ar r $@ $^
+
+test: $(OBJS) test.o
+	$(F90) $(FFLAGS) -o $@ test.o $(OBJS) $(LIBS)
+
+%.o: %.f90
+	$(F90) $(FFLAGS) $(INCS) -c -o $@ $<
+
+%.o: %.F90
+	$(F90) $(FFLAGS) $(INCS) -c -o $@ $<
+
+clean:
+	$(RM) *.o *.mod *.log *~ *.a test
+
+distclean: clean
+	$(RM) test
+

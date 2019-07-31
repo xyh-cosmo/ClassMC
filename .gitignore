@@ -1,0 +1,61 @@
+ensemble_chain_*
+
+build/
+chains/
+chain_debug
+data/plc_2.0
+data/plc_1.0
+data/Hz*
+data/JLA*
+data/SNLS
+data/Union2.1
+data/bao*
+data/sdss*
+data/wigglez*
+logs/
+
+backup
+
+wmap7_data
+wmap9_data
+
+
+
+python/*.txt
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+source/class/class
+bin
+source/class/build/
+SN_python/jla.txt
+test_output/classmc_test_BAO.txt
+
+temp.paramnames

@@ -1,0 +1,40 @@
+ 
+ WMAP 7-year likelihood test program
+ ===================================
+ 
+ NOTE: This code uses a different CMB spectrum than previous versions.
+       The new spectrum (data/test_cls_v4.dat) is a better fit to the data
+       than the old one (data/test_cls_v3.dat).
+ 
+       As before, a constant offset is now being subtracted from ln(L).
+       The value of the offset is the sum of the determinant
+       contributions to ln(L) computed for the CMB spectrum in
+       data/test_cls_v4.dat, ln_det_C_f:
+ 
+         -2ln(L) = chi^2 + ln_det_C - ln_det_C_f
+ 
+ Reading in Cls from: data/test_cls_v4.dat
+ Initializing WMAP likelihood, version v4
+ ------------------------------------------------------------
+ WMAP likelihood evaluation report:
+ no errors
+ ------------------------------------------------------------
+------------------------------------------------------------------
+Breakdown of -2ln(L)
+------------------------------------------------------------------
+MASTER TTTT              =   1246.106041 for   1168 ls
+Beam/ptsrc TT correction =     -2.587537
+low-l TTTT gibbs         =     -9.380526
+MASTER TETE chi2         =    881.394005 for    777 ls
+MASTER TETE det          =   3717.626623
+TT/TE/EE/BB low-l chi2   =   1263.436570 for   1170 pixels
+TT/TE/EE/BB low-l det    =    384.536614
+------------------------------------------------------------------
+TOTAL -2ln(L)            =   7481.131790
+------------------------------------------------------------------
+Expected -2ln(L)         =   7481.131790
+      Difference         =      0.000000
+------------------------------------------------------------------
+ 
+ Differences on the order of O(0.001) are normal between platforms.
+ 

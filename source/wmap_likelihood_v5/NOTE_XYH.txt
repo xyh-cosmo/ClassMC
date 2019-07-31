@@ -1,0 +1,2 @@
+@ Jul-14-2017
+Modified Makefile to use gfortran as the defualt compiler
