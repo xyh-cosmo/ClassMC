@@ -27,6 +27,7 @@ We provide several examples to demonstrate the usage of ClassMC:
 3) LCDM_JDF_1: use mock JDF samples to constrain {H0, MB, omegabh2 omegach2}
 
 The following are for the reconstruction of w(z):
+
 4) DDE_JD16_no_err
 5) DDE_JD16_1
 6) DDE_JDF_1
