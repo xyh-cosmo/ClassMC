@@ -35,13 +35,17 @@ The following are for the reconstruction of w(z):
 
 The following commands (in the master folder) can be used to run the above 6 examples (correspondingly):
 
-mpirun -np 4 bin/ClassMC LCDM_JD16_no_err/input.ini
-mpirun -np 4 bin/ClassMC LCDM_JD16_1/input_1.ini
-mpirun -np 4 bin/ClassMC LCDM_JDF_1/input_1.ini
+1) mpirun -np 4 bin/ClassMC LCDM_JD16_no_err/input.ini
 
-mpirun -np 4 bin/ClassMC DDE_JD16_no_err/input.ini
-mpirun -np 4 bin/ClassMC LCDM_JD16_1/input_1.ini
-mpirun -np 4 bin/ClassMC LCDM_JDF_1/input_1.ini
+2) mpirun -np 4 bin/ClassMC LCDM_JD16_1/input_1.ini
+
+3) mpirun -np 4 bin/ClassMC LCDM_JDF_1/input_1.ini
+
+4) mpirun -np 4 bin/ClassMC DDE_JD16_no_err/input.ini
+
+5) mpirun -np 4 bin/ClassMC LCDM_JD16_1/input_1.ini
+
+6) mpirun -np 4 bin/ClassMC LCDM_JDF_1/input_1.ini
 
 Notes:
 ==========
