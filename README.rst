@@ -2,7 +2,7 @@
 ClassMC
 ========
 :ClassMC:	A Cosmological Parameter Estimation Code based on CLASS and Affine-Invariant MCMC algrithm
-:Author:	Youhua Xu
+:Author:	Youhua Xu (yhxu@nao.cas.cn)
 
 Description
 =============
