@@ -7,7 +7,9 @@ ClassMC
 Description
 =============
 This code is based on:
+
 1) CLASS (--written by Julien Lesgourgues, https://github.com/lesgourg/class_public)
+
 2) imcmc (--written by Youhua Xu, https://github.com/xyh-cosmo/imcmc/)
 
 Prerequisite
