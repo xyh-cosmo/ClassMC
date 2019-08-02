@@ -990,11 +990,6 @@ int input_read_parameters(
                       errmsg,
                       "\n=> when DDE_approx_opt == 1, array_z[0] must be greater than 0!" );
           pba->DDE_table_size += 1;
-        } else if( pba->DDE_approx_opt == 2 ){
-          class_test( array_z[0] <=0,
-                      errmsg,
-                      "\n=> when DDE_approx_opt == 2, array_z[0] must be greater than 0!" );
-          pba->DDE_table_size += 2;
         }
 
         double *array_z_extra, *array_w_extra;
@@ -1099,7 +1094,7 @@ int input_read_parameters(
             }
         }
 
-#if defined(_DDE_APPROX_OPT_0_) || defined(_DDE_APPROX_OPT_2_)
+#if defined(_DDE_APPROX_OPT_0_)
         pba->spline_DDE_weff_size = pba->DDE_table_size + pba->DDE_table_size_extra;
 
         //  try to get spline_DDE_weff_size from input parameter file
@@ -1120,7 +1115,7 @@ int input_read_parameters(
         pba->w_gsl_interp_method = 0;
         pba->weff_gsl_interp_method = 0;
 
-//  the GSL interpolation (method) and Romberge integration settings are needed only when one of "_DDE_APPROX_OPT_0_" & "_DDEP_APPOX_OPT_2_" is set
+//  the GSL interpolation (method) and Romberge integration settings are needed only when one of "_DDE_APPROX_OPT_0_" is set
         int w_gsl_interp_method, w_gsl_interp_method_flag;
         int weff_gsl_interp_method, weff_gsl_interp_method_flag;
         class_call(parser_read_int( pfc,
@@ -1215,28 +1210,6 @@ int input_read_parameters(
             if( pba->DDE_z_max <= array_z[i-1] )
                 pba->DDE_z_max = array_z[i-1];
         }
-#elif defined(_DDE_APPROX_OPT_2_)
-    // in this case, pba->DDE_table_size = z_size+2, one is for z=0 and the other is for DDE_z_max (the right side of the last zbin)
-        int i;
-        for( i=0; i<pba->DDE_table_size-2; i++ ) {	// exclude the FIRST and LAST 
-          pba->DDE_z[i+1] = array_z[i];
-          pba->DDE_w[i+1] = array_w[i];
-
-          if( pba->DDE_z_max <= array_z[i] )
-              pba->DDE_z_max = array_z[i];
-        }
-
-        pba->DDE_z[0] = 0;  //    w(z=0) is extrapolated from w(z1) and w(z2)
-        pba->DDE_w[0] = pba->DDE_w[1] - (pba->DDE_w[2]-pba->DDE_w[1])/(pba->DDE_z[2]-pba->DDE_z[1]) * pba->DDE_z[1];
-
-        int idx_tmp = pba->DDE_table_size-1;
-
-        class_test( (pba->DDE_z_max <= pba->DDE_z[idx_tmp-1]),
-                    errmsg,
-                    "DDE_z_max should be larger than pba->DDE_z[pba->DDE_table_size-2]!");
-        pba->DDE_z[idx_tmp] = pba->DDE_z_max;
-        pba->DDE_w[idx_tmp] = pba->DDE_w[idx_tmp-1] 
-                            + (pba->DDE_w[idx_tmp-1]-pba->DDE_w[idx_tmp-2])/(pba->DDE_z[idx_tmp-1]-pba->DDE_z[idx_tmp-2])*(pba->DDE_z[idx_tmp]-pba->DDE_z[idx_tmp-1]);
 #endif
         if( pba->DDE_table_size_extra > 0 ) {
 
@@ -1300,22 +1273,7 @@ int input_read_parameters(
         class_call( background_DDE_init2(pba), 
                   pba->error_message, 
                   errmsg);
-#elif defined(_DDE_APPROX_OPT_2_)
-        class_call( background_DDE_init3(pba), 
-                  pba->error_message, 
-                  errmsg);
 #endif
-
-//	debug background_DDE_get_EoS
-/*		double ztmp=0;*/
-/*		double wtmp, wefftmp;*/
-/*		while ( ztmp < 3 ){*/
-/*			background_DDE_get_EoS(pba,ztmp,&wtmp,&wefftmp);*/
-/*			printf("---> z = %10.6f\tw = %10.6f\tweff = %10.6f\n",ztmp,wtmp,wefftmp);*/
-/*			ztmp += 0.05;*/
-/*		}*/
-
-/*		exit(0);*/
     }
     else {
 

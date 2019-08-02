@@ -44,9 +44,8 @@ CLASSMC_CCFLAG	=
 
 
 # which w(z) and weff(z) approximation method is to be used ?
-#CLASS_WEFF_CCFLAG = -D_DDE_APPROX_OPT_0_
-CLASS_WEFF_CCFLAG = -D_DDE_APPROX_OPT_1_
-#CLASS_WEFF_CCFLAG = -D_DDE_APPROX_OPT_2_
+#CLASS_WEFF_CCFLAG = -D_DDE_APPROX_OPT_0_	# use linear interpolation approximation for w(z)
+CLASS_WEFF_CCFLAG = -D_DDE_APPROX_OPT_1_	# use piece-wise constant approximation for w(z)
 
 # for debug weff(z)
 #CLASS_WEFF_CCFLAG += -D_DEBUG_WEFF_

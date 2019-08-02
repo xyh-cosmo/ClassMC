@@ -706,7 +706,7 @@ int background_free_input(
         if( pba->DDE_w_extra != NULL )
             free( pba->DDE_w_extra);
 
-#if defined(_DDE_APPROX_OPT_0_) || defined(_DDE_APPROX_OPT_2_)
+#if defined(_DDE_APPROX_OPT_0_)
         if (pba->spline_DDE_w != NULL)
             gsl_spline_free(pba->spline_DDE_w);
 
@@ -1545,33 +1545,10 @@ int background_DDE_init( struct background *pba ) {
 
     pba->DDE_EoS_at_high_z  = gsl_spline_eval( pba->spline_DDE_w, pba->DDE_z_max, pba->acc_DDE_w );
 
-//  don't know why, I have to replace 'pba->DDE_z_max' with 'pba->DDE_z_max-1e-15' to avoid GSL interpolation error ...
+//  replace 'pba->DDE_z_max' with 'pba->DDE_z_max-1e-15' to avoid GSL interpolation error ...
     pba->DDE_weff_at_high_z = gsl_spline_eval( pba->spline_DDE_weff, pba->DDE_z_max-1e-15, pba->acc_DDE_weff );
     
     pba->spline_is_ready = _TRUE_;
-/*    printf("--> pba->spline_is_ready = %d\n",pba->spline_is_ready);*/
-/*    exit(0);*/
-
-
-#ifdef _DEBUG_WEFF_
-    printf("\n>>> debugging inside %s of file: %s <<<\n",__FUNCTION__,__FILE__);
-    int ii=0,NN=100;
-    double ztemp,wtemp,wefftemp;
-    double zmax_tmp = 2.75;  // this value can be changed
-    double dztemp = zmax_tmp / (NN-1.);
-    printf(">>> writting debug results into file weff_debug.txt <<< \n");
-    FILE *fp = fopen("weff_debug.txt","w");
-    fprintf(fp,"#  z\tw\tweff\n");
-    while( ii < NN ) {
-        ztemp = 0.0 + ii*dztemp;
-        background_DDE_get_EoS(pba,ztemp,&wtemp,&wefftemp);
-        // printf("%6.4f\t%8.6f\t%8.6f\n",ztemp,wtemp,wefftemp);
-        fprintf(fp,"%6.4f\t%8.6f\t%10.6f\n",ztemp,wtemp,wefftemp);
-        ii += 1;
-    }
-    fclose(fp);
-    exit(0);
-#endif
 
     return _SUCCESS_;
 }
@@ -1598,10 +1575,6 @@ int background_DDE_init2( struct background *pba ) {
 
     pba->acc_DDE_w      = gsl_interp_accel_alloc();
 
-/*	pba->acc_DDE_weff   = NULL;	// not used*/
-/*	pba->spline_DDE_w   = NULL; // not used*/
-/*	pba->spline_DDE_weff= NULL;	// not used*/
-
     pba->DDE_EoS_at_high_z  = pba->DDE_w[pba->DDE_table_size+pba->DDE_table_size_extra-1];
 
     int i;
@@ -1616,121 +1589,8 @@ int background_DDE_init2( struct background *pba ) {
     
     pba->DDE_weff_at_high_z = tmp/log(1.+pba->DDE_z_max);
 
-#ifdef _DEBUG_WEFF_
-    printf("\n>>> debugging inside %s of file: %s <<<\n",__FUNCTION__,__FILE__);
-    int ii=0,NN=1000;
-    double ztemp,wtemp,wefftemp;
-    double zmax_tmp = 2.75;  // this value can be changed
-    double dztemp = zmax_tmp / (NN-1.);
-    printf(">>> writting debug results into file weff_debug.txt <<< \n");
-    FILE *fp = fopen("weff_debug.txt","w");
-    fprintf(fp,"#  z\tw\tweff\n");
-    while( ii < NN ) {
-        ztemp = 0.0 + ii*dztemp;
-        background_DDE_get_EoS(pba,ztemp,&wtemp,&wefftemp);
-        // printf("%6.4f\t%8.6f\t%8.6f\n",ztemp,wtemp,wefftemp);
-        fprintf(fp,"%6.4f\t%8.6f\t%10.6f\n",ztemp,wtemp,wefftemp);
-        ii += 1;
-    }
-    fclose(fp);
-    exit(0);
-#endif
-
     return _SUCCESS_;
 }
-#endif
-
-#if defined(_DDE_APPROX_OPT_2_)
-int background_DDE_init3( struct background *pba ) {
-
-    int i;
-
-//  NOTE: pba->spline_DDE_w and pba->spline_DDE_weff may have different size.
-    pba->acc_DDE_w      = gsl_interp_accel_alloc();
-    pba->acc_DDE_weff   = gsl_interp_accel_alloc();
-
-    switch ( pba->w_gsl_interp_method ){
-        case 0: // linear
-            pba->spline_DDE_w    = gsl_spline_alloc(gsl_interp_linear,pba->DDE_table_size+pba->DDE_table_size_extra); // add an extra point for z=0
-            break;
-        case 1: // cubic
-            pba->spline_DDE_w    = gsl_spline_alloc(gsl_interp_cspline,pba->DDE_table_size+pba->DDE_table_size_extra);  // add an extra point for z=0
-            break;
-    }
-
-    switch( pba->weff_gsl_interp_method ){
-        case 0: // linear
-            pba->spline_DDE_weff = gsl_spline_alloc(gsl_interp_linear,pba->spline_DDE_weff_size); // add an extra point for z=0
-            break;
-        case 1:  // cubic
-            pba->spline_DDE_weff = gsl_spline_alloc(gsl_interp_cspline,pba->spline_DDE_weff_size); // add an extra point for z=0
-            break;
-    }
-
-    gsl_spline_init(  pba->spline_DDE_w,
-                      pba->DDE_z,
-                      pba->DDE_w,
-                      pba->DDE_table_size+pba->DDE_table_size_extra);
-
-    double *z_temp, *weff_temp, *weff_integrand_temp;
-    class_alloc(z_temp, sizeof(double)*pba->spline_DDE_weff_size, pba->error_message);
-    class_alloc(weff_temp, sizeof(double)*pba->spline_DDE_weff_size, pba->error_message);
-    class_alloc(weff_integrand_temp, sizeof(double)*pba->spline_DDE_weff_size, pba->error_message);
-
-//	initialize the integral for weff(z):
-//	weff(z) = (ln(1+z))^-1 \int_0^z w(z')/(1+z') dz' 
-    for( i=0; i<pba->spline_DDE_weff_size; i++ ) {
-        weff_integrand_temp[i] = pba->DDE_w[i] / ( 1.0+pba->DDE_z[i] );
-    }
-
-    double dz = (pba->DDE_z_max)/(pba->spline_DDE_weff_size-1.0);
-    for( i=0; i<pba->spline_DDE_weff_size; i++ ) {
-
-        z_temp[i] = i*dz;
-
-        if( z_temp[i] < 1.0e-8 ) {
-            weff_temp[i] = pba->DDE_w[0];
-        }
-        else {
-            if( z_temp[i] > pba->DDE_z_max )
-                z_temp[i] = pba->DDE_z_max;
-
-            class_call(Romberg_Integrator(pba,
-                                          pba->DDE_z,
-                                          weff_integrand_temp,
-                                          pba->DDE_table_size+pba->DDE_table_size_extra, /* be careful here! */
-                                          0.0,
-                                          z_temp[i],
-                                          pba->romberg_weff_eps,
-                                          &(weff_temp[i]),
-                                          pba->w_gsl_interp_method ),
-                      pba->error_message,
-                      pba->error_message);
-
-            weff_temp[i] /= log(1.0+z_temp[i]);
-            // weff_temp[i] = -1.; /* for debug ... */
-        }
-    }
-
-    gsl_spline_init(  pba->spline_DDE_weff,
-                      z_temp,
-                      weff_temp,
-                      pba->spline_DDE_weff_size );
-
-    free(z_temp);
-    free(weff_temp);
-    free(weff_integrand_temp);
-
-    pba->DDE_EoS_at_high_z  = gsl_spline_eval( pba->spline_DDE_w, pba->DDE_z_max, pba->acc_DDE_w );
-
-//  replace 'pba->DDE_z_max' with 'pba->DDE_z_max-1e-15' to avoid GSL interpolation error ...
-    pba->DDE_weff_at_high_z = gsl_spline_eval( pba->spline_DDE_weff, pba->DDE_z_max-1e-15, pba->acc_DDE_weff );
-    
-    pba->spline_is_ready = _TRUE_;
-
-    return _SUCCESS_;
-}
-
 #endif
 
 // this integrator is used to calculate weff(z)
@@ -1818,7 +1678,7 @@ int background_DDE_get_EoS(
     double *weff
 ) {
 
-#if defined(_DDE_APPROX_OPT_0_) || defined(_DDE_APPROX_OPT_2_)  // interpolation
+#if defined(_DDE_APPROX_OPT_0_)  // interpolation
     class_test( pba->spline_is_ready != _TRUE_,
               pba->error_message,
               "gsl_spline is not ready!");
