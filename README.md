@@ -12,21 +12,19 @@ This code is based on:
 
 # Other prerequisites
 1) Armadillo (a C++ linear algebra library, http://arma.sourceforge.net/);
-2) WMAP7 / WMAP9 (https://lambda.gsfc.nasa.gov/product/map/current/likelihood_get.cfm/); 
+2) WMAP7 / WMAP9 likelihoods (https://lambda.gsfc.nasa.gov/product/map/current/likelihood_get.cfm/ ; we have included these likelihood codes inside ClassMC); 
 3) Planck likelihood (https://wiki.cosmos.esa.int/planck-legacy-archive/index.php/CMB_spectrum_%26_Likelihood_Code#2018_Likelihood);
 4) If one wants to use the Multinest or PolyChord sampler, then he/she needs to install the multinest (https://github.com/farhanferoz/MultiNest) or polychord (https://github.com/PolyChord/PolyChordLite) library properly (we have provided two interfaces to Multinest and PolyChord, see the C++ source files inside the main/ folder).
 
 # Examples (added @ 2019-08-02)
 
-To demonstrate the usage of ClassMC, we provide several examples (extracted from the works in https://arxiv.org/abs/1907.13298),
-
-each of which is grouped into a folder:
+To demonstrate the usage of ClassMC, we provide several examples (extracted from the works in https://arxiv.org/abs/1907.13298), each of which is grouped into a single folder:
 
 1) LCDM_JD16_no_err/: use mock JD16* samples with random error;
-2) LCDM_JD16_1/: use mock JD16* samples to constrain {H0, MB, omegabh2 omegach2}
-3) LCDM_JDF_1/: use mock JDF samples to constrain {H0, MB, omegabh2 omegach2}
+2) LCDM_JD16_1/: use mock JD16* samples to constrain {H0, MB, omegabh2 omegach2};
+3) LCDM_JDF_1/: use mock JDF samples to constrain {H0, MB, omegabh2 omegach2};
 
-The following are for the reconstruction of w(z):
+and the following are for the reconstruction of w(z) from JD16* without/with random errors and from  JDF16:
 
 4) DDE_JD16_no_err/
 5) DDE_JD16_1/
