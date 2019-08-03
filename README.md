@@ -11,9 +11,10 @@ This code is based on:
 2) imcmc (written by Youhua Xu, https://github.com/xyh-cosmo/imcmc/)
 
 # Other prerequisites
-1) Armadillo (a C++ linear algebra library, http://arma.sourceforge.net/)
-2) WMAP7 / WMAP9 / Planck likelihoods
-3) If one wants to use the Multinest or PolyChord sampler, then he/she needs to install the multinest (https://github.com/farhanferoz/MultiNest) or polychord (https://github.com/PolyChord/PolyChordLite) library properly (we have provided two interfaces to Multinest and PolyChord, see the C++ source files inside the main/ folder).
+1) Armadillo (a C++ linear algebra library, http://arma.sourceforge.net/);
+2) WMAP7 / WMAP9 (https://lambda.gsfc.nasa.gov/product/map/current/likelihood_get.cfm/); 
+3) Planck likelihood (https://wiki.cosmos.esa.int/planck-legacy-archive/index.php/CMB_spectrum_%26_Likelihood_Code#2018_Likelihood);
+4) If one wants to use the Multinest or PolyChord sampler, then he/she needs to install the multinest (https://github.com/farhanferoz/MultiNest) or polychord (https://github.com/PolyChord/PolyChordLite) library properly (we have provided two interfaces to Multinest and PolyChord, see the C++ source files inside the main/ folder).
 
 # Examples (added @ 2019-08-02)
 
@@ -56,6 +57,6 @@ mpirun -np 4 bin/ClassMC DDE_JDF_1/input_1.ini
 # TODO
 
 - [ ] Updating this README as well as comments inside the example ini files to make the useage of ClassMC easier;
-- [ ] Writing a detailed document about the code structure of ClassMC;
+- [ ] Writing a detailed document about the code structure of ClassMC as well as modifications to CLASS;
 - [ ] Adding support for Planck 2018 likelihoods (https://wiki.cosmos.esa.int/planck-legacy-archive/index.php/CMB_spectrum_%26_Likelihood_Code#2018_Likelihood);
 - [ ] Updating to newer version of CLASS.
