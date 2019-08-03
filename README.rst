@@ -45,9 +45,9 @@ The following commands (in the master folder) can be used to run the above 6 exa
 
 4) mpirun -np 4 bin/ClassMC DDE_JD16_no_err/input.ini
 
-5) mpirun -np 4 bin/ClassMC LCDM_JD16_1/input_1.ini
+5) mpirun -np 4 bin/ClassMC DDE_JD16_1/input_1.ini
 
-6) mpirun -np 4 bin/ClassMC LCDM_JDF_1/input_1.ini
+6) mpirun -np 4 bin/ClassMC DDE_JDF_1/input_1.ini
 
 Notes:
 ==========
