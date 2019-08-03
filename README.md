@@ -49,6 +49,6 @@ The following commands (in the master folder) can be used to run the above 6 exa
 
 # TODO
 
-- [ ] We will kept updating this README and comments inside the example *ini files to make the useage of ClassMC more easier;
+- [ ] Kept updating this README and comments inside the example ini files to make the useage of ClassMC more easier;
 - [ ] Writing a detailed document about the code structure of ClassMC;
 - [ ] Adding support for Planck 2018 likelihoods.
