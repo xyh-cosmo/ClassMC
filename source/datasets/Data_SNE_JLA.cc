@@ -19,7 +19,8 @@
 #define dtrtrs dtrtrs_
 
 extern "C" {
-#include <cblas.h>
+//#include <cblas.h>
+#include <gsl/gsl_cblas.h>
     void dpotrf(const char * UPLO, int * N, double * A, int * LDA, int * INFO);
     void dtrtrs(const char * UPLO, const char * TRANS, const char * DIAG, int * N,
                 int * NRHS, double * A, int * LDA, double * B, int * LDB, int *INFO);

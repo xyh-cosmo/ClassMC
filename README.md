@@ -58,3 +58,29 @@ mpirun -np 4 bin/ClassMC DDE_JDF_1/input_1.ini
 - [ ] Writing a detailed document about the code structure of ClassMC as well as modifications to CLASS;
 - [ ] Adding support for Planck 2018 likelihoods (https://wiki.cosmos.esa.int/planck-legacy-archive/index.php/CMB_spectrum_%26_Likelihood_Code#2018_Likelihood);
 - [ ] Updating to newer version of CLASS.
+
+# Problems & Solutions
+
+- [x] Recently, I eccounterred the following compilation problem after upgrading GSL to the latest version of GSL (v2.6):
+```
+In file included from ../source/datasets/Data_SNE_JLA.cc:21:
+/usr/include/x86_64-linux-gnu/cblas.h:69:13: error: conflicting declaration of C function ‘int cblas_izamax(int, const void*, int)’
+   69 | CBLAS_INDEX cblas_izamax(const int N, const void   *X, const int incX);
+      |             ^~~~~~~~~~~~
+In file included from /usr/local/include/gsl/gsl_blas_types.h:28,
+                 from /usr/local/include/gsl/gsl_matrix_complex_long_double.h:29,
+                 from /usr/local/include/gsl/gsl_matrix.h:4,
+                 from /usr/local/include/gsl/gsl_randist.h:24,
+                 from /usr/local/include/imcmc/imcmc.hpp:29,
+                 from ../include/jla.h:15,
+                 from ../source/datasets/Data_SNE_JLA.cc:3:
+/usr/local/include/gsl/gsl_cblas.h:102:13: note: previous declaration ‘size_t cblas_izamax(int, const void*, int)’
+  102 | CBLAS_INDEX cblas_izamax(const int N, const void   *X, const int incX);
+      |             ^~~~~~~~~~~~
+
+```
+To resolve this problem, I changed a little bit inside Data_SNE_JLA.cc in line 22:
+```
+//#include <cblas.h>
+#include <gsl/gsl_cblas.h>
+```

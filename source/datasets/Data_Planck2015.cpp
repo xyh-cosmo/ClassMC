@@ -648,9 +648,9 @@ void Data_Planck2015::compute_chisq(){
     if( has_lens )
         loglike_lens  = clik_lensing_compute( lens, cl_and_pars_lens, err );
 
-//    cout << "loglike_highl = " << loglike_highl << endl;
-//    cout << "loglike_lowP  = " << loglike_lowP << endl;
-//    cout << "loglike_lens  = " << loglike_lens << endl;
+    cout << "loglike_highl = " << loglike_highl << endl;
+    cout << "loglike_lowP  = " << loglike_lowP << endl;
+    cout << "loglike_lens  = " << loglike_lens << endl;
 
     loglike_total = (loglike_highl + loglike_lowP + loglike_lens + loglike_A_Planck);
 //    exit(0);
