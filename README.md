@@ -61,7 +61,7 @@ mpirun -np 4 bin/ClassMC DDE_JDF_1/input_1.ini
 
 # Problems & Solutions
 
-- [x] Recently, I eccounterred the following compilation problem after upgrading GSL to the latest version of GSL (v2.6):
+- [x] Recently, I eccountered the following compilation problem after upgrading GSL to the latest version (v2.6):
 ```
 In file included from ../source/datasets/Data_SNE_JLA.cc:21:
 /usr/include/x86_64-linux-gnu/cblas.h:69:13: error: conflicting declaration of C function ‘int cblas_izamax(int, const void*, int)’
